@@ -1,0 +1,10 @@
+.gpm-auth-second-password-title {
+    float: left;
+    margin-bottom: 5px;
+    width: 100%
+}
+
+.gpm-auth-second-password-input,
+.gpm-auth-second-passwordcheck-input{
+    float: left;
+}
