@@ -6,8 +6,8 @@
     "license" : "",
 
     "authors" : [{
-        "name": "patrick müller",
-        "email": "p.mueller@pcsg.de =",
+        "name": "Patrick Müller",
+        "email": "p.mueller@pcsg.de",
         "homepage": "http://www.pcsg.de",
         "role": "Developer"
     }],
@@ -24,7 +24,7 @@
 
     "autoload": {
         "psr-0" : {
-            "QUI" : "src/"
+            "Pcsg" : "src/"
         }
     }
 }
