@@ -2,7 +2,7 @@
     "name" : "pcsg/gpmauthsecondpassword",
     "type" : "quiqqer-module",
     "description" : "Auhentication plugin for pcsg/grouppasswordmanager -> Second password, independent from QUIQQER Login password",
-    "version" : "dev-dev",
+    "version" : "dev-master",
     "license" : "",
 
     "authors" : [{
