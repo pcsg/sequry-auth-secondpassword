@@ -50,6 +50,8 @@ define('package/pcsg/gpmauthsecondpassword/bin/controls/Registration', [
         create: function () {
             this.$Elm = this.parent();
 
+            this.$Elm.addClass('gpm-auth-second-password');
+
             this.$Elm.set(
                 'html',
                 '<label>' +

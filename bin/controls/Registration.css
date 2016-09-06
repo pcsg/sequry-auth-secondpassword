@@ -8,3 +8,7 @@
 .gpm-auth-second-passwordcheck-input{
     float: left;
 }
+
+.gpm-auth-second-password label {
+    width: initial !important;
+}

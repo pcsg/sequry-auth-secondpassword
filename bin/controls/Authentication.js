@@ -36,6 +36,7 @@ define('package/pcsg/gpmauthsecondpassword/bin/controls/Authentication', [
             this.parent(options);
 
             this.$Categories = null;
+            this.$Input      = null;
 
             this.addEvents({
                 onInject: this.$onInject
@@ -68,9 +69,9 @@ define('package/pcsg/gpmauthsecondpassword/bin/controls/Authentication', [
          */
         $onInject: function () {
             var self  = this;
-            var Input = this.$Elm.getElement('.gpm-auth-second-password-input');
+            this.$Input = this.$Elm.getElement('.gpm-auth-second-password-input');
 
-            Input.addEvents({
+            this.$Input.addEvents({
                 keydown: function (event) {
                     if (typeof event !== 'undefined' &&
                         event.code === 13) {
@@ -78,8 +79,10 @@ define('package/pcsg/gpmauthsecondpassword/bin/controls/Authentication', [
                     }
                 }
             });
+        },
 
-            Input.focus();
+        focus: function () {
+            this.$Input.focus();
         },
 
         /**
@@ -88,7 +91,7 @@ define('package/pcsg/gpmauthsecondpassword/bin/controls/Authentication', [
          * @return {string}
          */
         getAuthData: function () {
-            return this.$Elm.getElement('.gpm-auth-second-password-input').value;
+            return this.$Input.value;
         }
     });
 });

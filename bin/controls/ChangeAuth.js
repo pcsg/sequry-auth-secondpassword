@@ -55,22 +55,22 @@ define('package/pcsg/gpmauthsecondpassword/bin/controls/ChangeAuth', [
             this.$Elm.set(
                 'html',
                 '<label>' +
-                '<span class="gpm-auth-password-title">' +
+                '<span class="gpm-auth-second-password-title">' +
                 QUILocale.get(lg, 'changeauth.password.label.original') +
                 '</span>' +
-                '<input type="password" class="gpm-auth-password-input-original"/>' +
+                '<input type="password" class="gpm-auth-second-password-input-original"/>' +
                 '</label>' +
                 '<label>' +
-                '<span class="gpm-auth-password-title">' +
+                '<span class="gpm-auth-second-password-title">' +
                 QUILocale.get(lg, 'changeauth.password.label.new') +
                 '</span>' +
-                '<input type="password" class="gpm-auth-password-input-new"/>' +
+                '<input type="password" class="gpm-auth-second-password-input-new"/>' +
                 '</label>' +
                 '<label>' +
-                '<span class="gpm-auth-password-title">' +
+                '<span class="gpm-auth-second-password-title">' +
                 QUILocale.get(lg, 'changeauth.password.label.repeat') +
                 '</span>' +
-                '<input type="password" class="gpm-auth-password-input-repeat"/>' +
+                '<input type="password" class="gpm-auth-second-password-input-repeat"/>' +
                 '</label>'
             );
 
@@ -82,9 +82,9 @@ define('package/pcsg/gpmauthsecondpassword/bin/controls/ChangeAuth', [
          */
         $onInject: function () {
             var self            = this;
-            this.$InputOriginal = this.$Elm.getElement('.gpm-auth-password-input-original');
-            this.$InputNew      = this.$Elm.getElement('.gpm-auth-password-input-new');
-            this.$InputRepeat   = this.$Elm.getElement('.gpm-auth-password-input-repeat');
+            this.$InputOriginal = this.$Elm.getElement('.gpm-auth-second-password-input-original');
+            this.$InputNew      = this.$Elm.getElement('.gpm-auth-second-password-input-new');
+            this.$InputRepeat   = this.$Elm.getElement('.gpm-auth-second-password-input-repeat');
 
             this.$InputOriginal.addEvents({
                 keydown: function (event) {

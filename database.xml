@@ -7,6 +7,7 @@
             <field type="BLOB NOT NULL">password_hash</field>
             <field type="BLOB NOT NULL">password_salt</field>
             <field type="BLOB NOT NULL">key_salt</field>
+            <field type="BLOB NOT NULL">MAC</field>
             <primary>userId</primary>
         </table>
     </global>

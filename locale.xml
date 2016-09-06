@@ -31,6 +31,9 @@
         <locale name="exception.change.auth.new.information.empty">
             <de><![CDATA[Die neuen Authentifizierungsinformationen sind leer.]]></de>
         </locale>
+        <locale name="exception.user.authentication.data.not.authentic">
+            <de><![CDATA[Die neuen Authentifizierungsinformationen haben die Authentizitätsprüfung nicht bestanden. Bitte kontaktieren Sie einen Administrator.]]></de>
+        </locale>
 
         <!-- Class: Events -->
         <locale name="exception.set.password.only.via.plugin">
@@ -60,10 +63,10 @@
 
         <!-- Control: ChangeAuth -->
         <locale name="changeauth.password.label.original">
-            <de><![CDATA[Bisheriges QUIQQER Login-Passwort]]></de>
+            <de><![CDATA[Bisheriges Zweit-Passwort]]></de>
         </locale>
         <locale name="changeauth.password.label.new">
-            <de><![CDATA[Neues QUIQQER Login-Passwort]]></de>
+            <de><![CDATA[Neues Zweit-Passwort]]></de>
         </locale>
         <locale name="changeauth.password.label.repeat">
             <de><![CDATA[Passwort wiederholen]]></de>

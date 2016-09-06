@@ -6,14 +6,16 @@
 
 namespace Pcsg\GpmAuthSecondPassword;
 
+use Pcsg\GroupPasswordManager\Actors\CryptoUser;
+use Pcsg\GroupPasswordManager\Security\Hash;
 use Pcsg\GroupPasswordManager\Security\KDF;
 use Pcsg\GroupPasswordManager\Security\Keys\Key;
 use Pcsg\GroupPasswordManager\Security\MAC;
 use Pcsg\GroupPasswordManager\Security\Random;
+use Pcsg\GroupPasswordManager\Security\Utils;
 use QUI;
-use Pcsg\GroupPasswordManager\Security\Interfaces\iAuthPlugin;
+use Pcsg\GroupPasswordManager\Security\Interfaces\IAuthPlugin;
 use Pcsg\GroupPasswordManager\Security\Handler\Authentication;
-use QUI\Users\Auth as QUIAuth;
 
 /**
  * Class Events
@@ -21,7 +23,7 @@ use QUI\Users\Auth as QUIAuth;
  * @package pcsg/gpmauthsecondpassword
  * @author www.pcsg.de (Patrick Müller)
  */
-class AuthPlugin implements iAuthPlugin
+class AuthPlugin implements IAuthPlugin
 {
     const NAME = '2nd Password Authentification';
     const TBL  = 'pcsg_gpm_auth_second_password';
@@ -74,18 +76,45 @@ class AuthPlugin implements iAuthPlugin
 
         // get salt
         $result = QUI::getDataBase()->fetch(array(
-            'select' => array(
-                'password_salt'
-            ),
-            'from'   => self::TBL,
-            'where'  => array(
+//            'select' => array(
+//                'password_salt'
+//            ),
+            'from'  => self::TBL,
+            'where' => array(
                 'userId' => $User->getId()
             )
         ));
 
-        $salt = $result[0]['salt'];
+        $data = current($result);
 
-        $hashActual   = KDF::createKey($information, $salt);
+        $macData = array(
+            $data['userId'],
+            $data['password_hash'],
+            $data['password_salt'],
+            $data['key_salt']
+        );
+
+        $macExpected = $data['MAC'];
+        $macActual   = MAC::create(
+            implode('', $macData),
+            Utils::getSystemPasswordAuthKey()
+        );
+
+        if (!MAC::compare($macExpected, $macActual)) {
+            QUI\System\Log::addCritical(
+                self::class . ' authenticate() -> Auth data for user #' . $data['userId'] . ' possibly altered.'
+                . ' MAC mismatch!'
+            );
+
+            throw new QUI\Exception(array(
+                'pcsg/gpmauthsecondpassword',
+                'exception.user.authentication.data.not.authentic'
+            ));
+        }
+
+        $salt = $data['password_salt'];
+
+        $hashActual   = Hash::create($information, $salt);
         $hashExpected = self::getPasswordHash($User->getId());
 
         if (!MAC::compare($hashExpected, $hashActual)) {
@@ -172,10 +201,9 @@ class AuthPlugin implements iAuthPlugin
         }
 
         // check old authentication information
-        $QUIAuth = new QUIAuth($User->getUsername());
-        $auth    = $QUIAuth->auth($old);
-
-        if (!$auth) {
+        try {
+            self::authenticate($old, $User);
+        } catch (\Exception $Exception) {
             throw new QUI\Exception(array(
                 'pcsg/gpmauthsecondpassword',
                 'exception.change.auth.old.information.wrong'
@@ -193,9 +221,35 @@ class AuthPlugin implements iAuthPlugin
         }
 
         // set new user password
-        self::$passwordChange = true;
-        $User->setPassword($new);
-        self::$passwordChange = false;
+        $passwordSalt = Random::getRandomData();
+        $passwordHash = Hash::create($new, $passwordSalt);
+
+        $keySalt = Random::getRandomData();
+
+        $macData = array(
+            $User->getId(),
+            $passwordHash,
+            $passwordSalt,
+            $keySalt
+        );
+
+        $macValue = MAC::create(
+            implode('', $macData),
+            Utils::getSystemPasswordAuthKey()
+        );
+
+        QUI::getDataBase()->update(
+            self::TBL,
+            array(
+                'password_hash' => $passwordHash,
+                'password_salt' => $passwordSalt,
+                'key_salt'      => $keySalt,
+                'MAC'           => $macValue
+            ),
+            array(
+                'userId' => $User->getId()
+            )
+        );
 
         self::$authInformation[$User->getId()] = $new;
     }
@@ -221,7 +275,7 @@ class AuthPlugin implements iAuthPlugin
         ));
 
         // @todo ggf. abfragen ob existent
-        $salt = $result[0]['salt'];
+        $salt = $result[0]['key_salt'];
 
         return $salt;
     }
@@ -231,7 +285,7 @@ class AuthPlugin implements iAuthPlugin
      *
      * @param mixed $information - authentication information given by the user
      * @param \QUI\Users\User $User (optional) - if omitted, use current session user
-     * @return bool - success
+     * @return string - authentication information
      *
      * @throws QUI\Exception
      */
@@ -271,19 +325,33 @@ class AuthPlugin implements iAuthPlugin
         }
 
         $passwordSalt = Random::getRandomData();
-        $passwordHash = KDF::createKey($pw, $passwordSalt);
+        $passwordHash = Hash::create($pw, $passwordSalt);
+        $keySalt      = Random::getRandomData();
 
-        $keySalt = Random::getRandomData();
+        $macData = array(
+            $User->getId(),
+            $passwordHash,
+            $passwordSalt,
+            $keySalt
+        );
+
+        $macValue = MAC::create(
+            implode('', $macData),
+            Utils::getSystemPasswordAuthKey()
+        );
 
         QUI::getDataBase()->insert(
             self::TBL,
             array(
                 'userId'        => $User->getId(),
-                'password_hash'          => $passwordHash,
+                'password_hash' => $passwordHash,
                 'password_salt' => $passwordSalt,
-                'key_salt'      => $keySalt
+                'key_salt'      => $keySalt,
+                'MAC'           => $macValue
             )
         );
+
+        return $pw;
     }
 
     /**
@@ -393,5 +461,21 @@ class AuthPlugin implements iAuthPlugin
         }
 
         return $result[0]['password_hash'];
+    }
+
+    /**
+     * Delete a user from this plugin
+     *
+     * @param CryptoUser $CryptoUser
+     * @return mixed
+     */
+    public static function deleteUser($CryptoUser)
+    {
+        QUI::getDataBase()->delete(
+            self::TBL,
+            array(
+                'userId' => $CryptoUser->getId()
+            )
+        );
     }
 }
