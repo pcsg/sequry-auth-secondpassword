@@ -60,6 +60,12 @@
         <locale name="registration.passwordcheck.label">
             <de><![CDATA[Zweit-Passwort wiederholen]]></de>
         </locale>
+        <locale name="registration.random.btn.text">
+            <de><![CDATA[Zufälliges Passwort]]></de>
+        </locale>
+        <locale name="registration.passwordshow.label">
+            <de><![CDATA[Passwörter im Klartext anzeigen]]></de>
+        </locale>
 
         <!-- Control: ChangeAuth -->
         <locale name="changeauth.password.label.original">
