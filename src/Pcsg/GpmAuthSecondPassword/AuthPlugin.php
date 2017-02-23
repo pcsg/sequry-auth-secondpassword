@@ -66,6 +66,10 @@ class AuthPlugin implements IAuthPlugin
             $User = QUI::getUserBySession();
         }
 
+        if (self::isAuthenticated($User)) {
+            return true;
+        }
+
         if (!self::isRegistered($User)) {
             // @todo eigenen 401 error code
             throw new QUI\Exception(array(
@@ -76,9 +80,6 @@ class AuthPlugin implements IAuthPlugin
 
         // get salt
         $result = QUI::getDataBase()->fetch(array(
-//            'select' => array(
-//                'password_salt'
-//            ),
             'from'  => self::TBL,
             'where' => array(
                 'userId' => $User->getId()
@@ -222,7 +223,10 @@ class AuthPlugin implements IAuthPlugin
 
         // set new user password
         $passwordSalt = Random::getRandomData();
+
+        \QUI\System\Log::writeRecursive($new);
         $passwordHash = Hash::create($new, $passwordSalt);
+        \QUI\System\Log::writeRecursive($passwordHash);
 
         $keySalt = Random::getRandomData();
 

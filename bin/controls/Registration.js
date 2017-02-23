@@ -13,11 +13,13 @@
 define('package/pcsg/gpmauthsecondpassword/bin/controls/Registration', [
 
     'qui/controls/Control',
+    'qui/controls/buttons/Button',
+
     'Locale',
 
     'css!package/pcsg/gpmauthsecondpassword/bin/controls/Registration.css'
 
-], function (QUIControl, QUILocale) {
+], function (QUIControl, QUIButton, QUILocale) {
     "use strict";
 
     var lg = 'pcsg/gpmauthsecondpassword';
@@ -37,6 +39,10 @@ define('package/pcsg/gpmauthsecondpassword/bin/controls/Registration', [
 
             this.$Categories = null;
 
+            this.$Input      = null;
+            this.$InputCheck = null;
+            this.$show       = false;
+
             this.addEvents({
                 onInject: this.$onInject
             });
@@ -48,7 +54,9 @@ define('package/pcsg/gpmauthsecondpassword/bin/controls/Registration', [
          * @return {HTMLDivElement}
          */
         create: function () {
-            this.$Elm = this.parent();
+            this.parent();
+
+            var self = this;
 
             this.$Elm.addClass('gpm-auth-second-password');
 
@@ -65,7 +73,71 @@ define('package/pcsg/gpmauthsecondpassword/bin/controls/Registration', [
                 QUILocale.get(lg, 'registration.passwordcheck.label') +
                 '</span>' +
                 '<input type="password" class="gpm-auth-second-passwordcheck-input"/>' +
-                '</label>'
+                '</label>' +
+                '<div class="gpm-auth-second-password-show">' +
+                '<label>' +
+                '<span>' +
+                QUILocale.get(lg, 'registration.passwordshow.label') +
+                '</span>' +
+                '<input type="checkbox"/>' +
+                '</label>' +
+                '</div>' +
+                '<div class="gpm-auth-second-password-generate"></div>'
+            );
+
+            this.$Input           = this.$Elm.getElement('.gpm-auth-second-password-input');
+            this.$InputCheck      = this.$Elm.getElement('.gpm-auth-second-passwordcheck-input');
+            var ShowPasswordInput = this.$Elm.getElement('.gpm-auth-second-password-show input');
+
+            ShowPasswordInput.addEvents({
+                change: function (event) {
+                    var Elm = event.target;
+
+                    if (Elm.checked) {
+                        self.$Input.setProperty('type', 'text');
+                        self.$InputCheck.setProperty('type', 'text');
+                    } else {
+                        self.$Input.setProperty('type', 'password');
+                        self.$InputCheck.setProperty('type', 'password');
+                    }
+                }
+            });
+
+            this.$Input.addEvents({
+                keydown: function (event) {
+                    if (typeof event !== 'undefined' &&
+                        event.code === 13) {
+                        self.fireEvent('submit');
+                    }
+                }
+            });
+
+            this.$InputCheck.addEvents({
+                keydown: function (event) {
+                    if (typeof event !== 'undefined' &&
+                        event.code === 13) {
+                        self.fireEvent('submit');
+                    }
+                }
+            });
+
+            new QUIButton({
+                text     : QUILocale.get(lg, 'registration.random.btn.text'),
+                textimage: 'fa fa-random',
+                events   : {
+                    onClick: function () {
+                        var rndPass = Math.random().toString(36).slice(-16);
+
+                        self.$Input.value      = rndPass;
+                        self.$InputCheck.value = rndPass;
+
+                        if (!ShowPasswordInput.checked) {
+                            ShowPasswordInput.click();
+                        }
+                    }
+                }
+            }).inject(
+                this.$Elm.getElement('.gpm-auth-second-password-generate')
             );
 
             return this.$Elm;
@@ -75,40 +147,18 @@ define('package/pcsg/gpmauthsecondpassword/bin/controls/Registration', [
          * event : on inject
          */
         $onInject: function () {
-            var self       = this;
-            var Input      = this.$Elm.getElement('.gpm-auth-second-password-input');
-            var InputCheck = this.$Elm.getElement('.gpm-auth-second-passwordcheck-input');
-
-            Input.addEvents({
-                keydown: function (event) {
-                    if (typeof event !== 'undefined' &&
-                        event.code === 13) {
-                        self.fireEvent('submit');
-                    }
-                }
-            });
-
-            InputCheck.addEvents({
-                keydown: function (event) {
-                    if (typeof event !== 'undefined' &&
-                        event.code === 13) {
-                        self.fireEvent('submit');
-                    }
-                }
-            });
-
-            Input.focus();
+            this.$Input.focus();
         },
 
         /**
          * Return authentication information
          *
-         * @return {string}
+         * @return {object}
          */
         getRegistrationData: function () {
             return {
-                password     : this.$Elm.getElement('.gpm-auth-second-password-input').value,
-                passwordcheck: this.$Elm.getElement('.gpm-auth-second-passwordcheck-input').value
+                password     : this.$Input.value,
+                passwordcheck: this.$InputCheck.value
             }
         }
     });

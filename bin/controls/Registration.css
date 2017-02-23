@@ -4,6 +4,17 @@
     width: 100%
 }
 
+.gpm-auth-second-password-show {
+    margin: 10px 0;
+    clear: both;
+    float: left;
+}
+
+.gpm-auth-second-password-generate {
+    float: left;
+    clear: both;
+}
+
 .gpm-auth-second-password-input,
 .gpm-auth-second-passwordcheck-input{
     float: left;
