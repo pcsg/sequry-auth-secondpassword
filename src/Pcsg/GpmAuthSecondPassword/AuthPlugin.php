@@ -25,7 +25,7 @@ use Pcsg\GroupPasswordManager\Security\Handler\Authentication;
  */
 class AuthPlugin implements IAuthPlugin
 {
-    const NAME = '2nd Password Authentification';
+    const NAME = 'Zweit-Passwort';
     const TBL  = 'pcsg_gpm_auth_second_password';
 
     /**
@@ -428,7 +428,7 @@ class AuthPlugin implements IAuthPlugin
         Authentication::registerPlugin(
             self::class,
             self::NAME,
-            'Password authentication via second password'
+            'Authentifizierung per Zweit-Passwort'
         );
     }
 
