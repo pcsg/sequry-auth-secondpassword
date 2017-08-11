@@ -16,10 +16,11 @@ define('package/pcsg/gpmauthsecondpassword/bin/controls/Registration', [
     'qui/controls/buttons/Button',
 
     'Locale',
+    'package/pcsg/grouppasswordmanager/bin/Passwords',
 
     'css!package/pcsg/gpmauthsecondpassword/bin/controls/Registration.css'
 
-], function (QUIControl, QUIButton, QUILocale) {
+], function (QUIControl, QUIButton, QUILocale, Passwords) {
     "use strict";
 
     var lg = 'pcsg/gpmauthsecondpassword';
@@ -126,14 +127,14 @@ define('package/pcsg/gpmauthsecondpassword/bin/controls/Registration', [
                 textimage: 'fa fa-random',
                 events   : {
                     onClick: function () {
-                        var rndPass = Math.random().toString(36).slice(-16);
-
-                        self.$Input.value      = rndPass;
-                        self.$InputCheck.value = rndPass;
-
                         if (!ShowPasswordInput.checked) {
                             ShowPasswordInput.click();
                         }
+
+                        Passwords.generateRandomPassword().then(function(randomPass) {
+                            self.$Input.value      = randomPass;
+                            self.$InputCheck.value = randomPass;
+                        });
                     }
                 }
             }).inject(
@@ -159,7 +160,7 @@ define('package/pcsg/gpmauthsecondpassword/bin/controls/Registration', [
             return {
                 password     : this.$Input.value,
                 passwordcheck: this.$InputCheck.value
-            }
+            };
         }
     });
 });
