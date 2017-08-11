@@ -157,10 +157,10 @@ define('package/pcsg/gpmauthsecondpassword/bin/controls/Registration', [
          * @return {object}
          */
         getRegistrationData: function () {
-            return {
+            return JSON.encode({
                 password     : this.$Input.value,
                 passwordcheck: this.$InputCheck.value
-            };
+            });
         }
     });
 });

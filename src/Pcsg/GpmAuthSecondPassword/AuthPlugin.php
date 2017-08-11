@@ -338,7 +338,7 @@ class AuthPlugin implements IAuthPlugin
         );
 
         $macValue = MAC::create(
-            implode('', $macData),
+            new HiddenString(implode('', $macData)),
             Utils::getSystemPasswordAuthKey()
         );
 
