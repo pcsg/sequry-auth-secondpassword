@@ -44,6 +44,13 @@
 
     <groups name="pcsg/gpmauthsecondpassword" datatype="php,js">
 
+        <locale name="plugin.name">
+            <de><![CDATA[Schlüssel-Datei]]></de>
+        </locale>
+        <locale name="plugin.description">
+            <de><![CDATA[Authentifizierung per Schlüssel-Datei]]></de>
+        </locale>
+
     </groups>
 
     <groups name="pcsg/gpmauthsecondpassword" datatype="js">
