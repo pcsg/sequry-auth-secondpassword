@@ -439,11 +439,7 @@ class AuthPlugin implements IAuthPlugin
      */
     public static function registerPlugin()
     {
-        Authentication::registerPlugin(
-            self::class,
-            self::NAME,
-            'Authentifizierung per Zweit-Passwort'
-        );
+        Authentication::registerPlugin(new self());
     }
 
     /**
