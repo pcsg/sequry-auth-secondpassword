@@ -45,10 +45,10 @@
     <groups name="pcsg/gpmauthsecondpassword" datatype="php,js">
 
         <locale name="plugin.name">
-            <de><![CDATA[Schlüssel-Datei]]></de>
+            <de><![CDATA[Zweit-Passwort]]></de>
         </locale>
         <locale name="plugin.description">
-            <de><![CDATA[Authentifizierung per Schlüssel-Datei]]></de>
+            <de><![CDATA[Authentifizierung per Zweit-Passwort]]></de>
         </locale>
 
     </groups>
