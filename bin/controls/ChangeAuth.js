@@ -1,30 +1,30 @@
 /**
  * Control for collecting authentication data
  *
- * @module package/pcsg/gpmauthsecondpassword/bin/controls/ChangeAuth
+ * @module package/sequry/auth-secondpassword/bin/controls/ChangeAuth
  * @author www.pcsg.de (Patrick Müller)
  *
  * @event onSubmit [authData, this]
  */
-define('package/pcsg/gpmauthsecondpassword/bin/controls/ChangeAuth', [
+define('package/sequry/auth-secondpassword/bin/controls/ChangeAuth', [
 
-    'package/pcsg/grouppasswordmanager/bin/controls/authPlugins/ChangeAuth',
+    'package/sequry/core/bin/controls/authPlugins/ChangeAuth',
 
     'Locale',
     'Mustache',
 
-    'text!package/pcsg/gpmauthsecondpassword/bin/controls/ChangeAuth.html',
-    'css!package/pcsg/gpmauthsecondpassword/bin/controls/ChangeAuth.css'
+    'text!package/sequry/auth-secondpassword/bin/controls/ChangeAuth.html',
+    'css!package/sequry/auth-secondpassword/bin/controls/ChangeAuth.css'
 
 ], function (ChangeAuthBaseClass, QUILocale, Mustache, template) {
     "use strict";
 
-    var lg = 'pcsg/gpmauthsecondpassword';
+    var lg = 'sequry/auth-secondpassword';
 
     return new Class({
 
         Extends: ChangeAuthBaseClass,
-        Type   : 'package/pcsg/gpmauthsecondpassword/bin/controls/ChangeAuth',
+        Type   : 'package/sequry/auth-secondpassword/bin/controls/ChangeAuth',
 
         Binds: [
             '$onInject',

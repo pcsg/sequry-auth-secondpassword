@@ -1,33 +1,31 @@
 <?php
 
 /**
- * This file contains \Pcsg\GpmAuthSecondPassword\AuthPlugin
+ * This file contains \Sequry\Auth\SecondPassword\AuthPlugin
  */
 
-namespace Pcsg\GpmAuthSecondPassword;
+namespace Sequry\Auth\SecondPassword;
 
-use Pcsg\GroupPasswordManager\Actors\CryptoUser;
-use Pcsg\GroupPasswordManager\Security\Hash;
-use Pcsg\GroupPasswordManager\Security\KDF;
-use Pcsg\GroupPasswordManager\Security\Keys\Key;
-use Pcsg\GroupPasswordManager\Security\MAC;
-use Pcsg\GroupPasswordManager\Security\Random;
-use Pcsg\GroupPasswordManager\Security\Utils;
+use Sequry\Core\Actors\CryptoUser;
+use Sequry\Core\Security\Hash;
+use Sequry\Core\Security\KDF;
+use Sequry\Core\Security\Keys\Key;
+use Sequry\Core\Security\MAC;
+use Sequry\Core\Security\Random;
+use Sequry\Core\Security\Utils;
 use QUI;
-use Pcsg\GroupPasswordManager\Security\Interfaces\IAuthPlugin;
-use Pcsg\GroupPasswordManager\Security\Handler\Authentication;
-use Pcsg\GroupPasswordManager\Security\HiddenString;
+use Sequry\Core\Security\Interfaces\IAuthPlugin;
+use Sequry\Core\Security\Handler\Authentication;
+use Sequry\Core\Security\HiddenString;
 
 /**
  * Class Events
  *
- * @package pcsg/gpmauthsecondpassword
  * @author www.pcsg.de (Patrick Müller)
  */
 class AuthPlugin implements IAuthPlugin
 {
-    const NAME = 'Zweit-Passwort';
-    const TBL  = 'pcsg_gpm_auth_second_password';
+    const TBL = 'pcsg_gpm_auth_second_password';
 
     /**
      * Flag for user password change
@@ -51,7 +49,7 @@ class AuthPlugin implements IAuthPlugin
     public static function getNameLocaleData()
     {
         return array(
-            'pcsg/gpmauthsecondpassword',
+            'sequry/auth-secondpassword',
             'plugin.name'
         );
     }
@@ -64,7 +62,7 @@ class AuthPlugin implements IAuthPlugin
     public static function getDescriptionLocaleData()
     {
         return array(
-            'pcsg/gpmauthsecondpassword',
+            'sequry/auth-secondpassword',
             'plugin.description'
         );
     }
@@ -90,7 +88,7 @@ class AuthPlugin implements IAuthPlugin
         if (!self::isRegistered($User)) {
             // @todo eigenen 401 error code
             throw new QUI\Exception(array(
-                'pcsg/gpmauthsecondpassword',
+                'sequry/auth-secondpassword',
                 'exception.user.not.registered'
             ));
         }
@@ -125,7 +123,7 @@ class AuthPlugin implements IAuthPlugin
             );
 
             throw new QUI\Exception(array(
-                'pcsg/gpmauthsecondpassword',
+                'sequry/auth-secondpassword',
                 'exception.user.authentication.data.not.authentic'
             ));
         }
@@ -137,7 +135,7 @@ class AuthPlugin implements IAuthPlugin
 
         if (!MAC::compare($hashExpected, $hashActual)) {
             throw new QUI\Exception(array(
-                'pcsg/gpmauthsecondpassword',
+                'sequry/auth-secondpassword',
                 'exception.user.authentication.data.wrong'
             ));
         }
@@ -177,7 +175,7 @@ class AuthPlugin implements IAuthPlugin
 
         if (!self::isAuthenticated($User)) {
             throw new QUI\Exception(array(
-                'pcsg/gpmauthsecondpassword',
+                'sequry/auth-secondpassword',
                 'exception.derive.key.user.not.authenticated'
             ));
         }
@@ -192,7 +190,7 @@ class AuthPlugin implements IAuthPlugin
      */
     public static function getAuthenticationControl()
     {
-        return 'package/pcsg/gpmauthsecondpassword/bin/controls/Authentication';
+        return 'package/sequry/auth-secondpassword/bin/controls/Authentication';
     }
 
     /**
@@ -213,7 +211,7 @@ class AuthPlugin implements IAuthPlugin
 
         if (!self::isRegistered($User)) {
             throw new QUI\Exception(array(
-                'pcsg/gpmauthsecondpassword',
+                'sequry/auth-secondpassword',
                 'exception.change.auth.user.not.registered'
             ));
         }
@@ -223,7 +221,7 @@ class AuthPlugin implements IAuthPlugin
             self::authenticate($old, $User);
         } catch (\Exception $Exception) {
             throw new QUI\Exception(array(
-                'pcsg/gpmauthsecondpassword',
+                'sequry/auth-secondpassword',
                 'exception.change.auth.old.information.wrong'
             ));
         }
@@ -231,7 +229,7 @@ class AuthPlugin implements IAuthPlugin
         // check new authentication information
         if (empty($new)) {
             throw new QUI\Exception(array(
-                'pcsg/gpmauthsecondpassword',
+                'sequry/auth-secondpassword',
                 'exception.change.auth.new.information.empty'
             ));
         }
@@ -313,7 +311,7 @@ class AuthPlugin implements IAuthPlugin
 
         if (self::isRegistered($User)) {
             throw new QUI\Exception(array(
-                'pcsg/gpmauthsecondpassword',
+                'sequry/auth-secondpassword',
                 'exception.user.already.registered'
             ));
         }
@@ -327,7 +325,7 @@ class AuthPlugin implements IAuthPlugin
             || empty($information['passwordcheck'])
         ) {
             throw new QUI\Exception(array(
-                'pcsg/gpmauthsecondpassword',
+                'sequry/auth-secondpassword',
                 'exception.register.invalid.registration.information'
             ));
         }
@@ -337,7 +335,7 @@ class AuthPlugin implements IAuthPlugin
 
         if ($pw->getString() !== $pwCheck) {
             throw new QUI\Exception(array(
-                'pcsg/gpmauthsecondpassword',
+                'sequry/auth-secondpassword',
                 'exception.register.passwords.not.equal'
             ));
         }
@@ -429,7 +427,7 @@ class AuthPlugin implements IAuthPlugin
      */
     public static function getRegistrationControl()
     {
-        return 'package/pcsg/gpmauthsecondpassword/bin/controls/Registration';
+        return 'package/sequry/auth-secondpassword/bin/controls/Registration';
     }
 
     /**
@@ -449,7 +447,7 @@ class AuthPlugin implements IAuthPlugin
      */
     public static function getChangeAuthenticationControl()
     {
-        return 'package/pcsg/gpmauthsecondpassword/bin/controls/ChangeAuth';
+        return 'package/sequry/auth-secondpassword/bin/controls/ChangeAuth';
     }
 
     /**
