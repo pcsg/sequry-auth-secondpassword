@@ -1,7 +1,7 @@
 {
-    "name": "pcsg\/gpmauthsecondpassword",
-    "type": "quiqqer-module",
-    "description": "Auhentication plugin for pcsg\/grouppasswordmanager -> Second password, independent from QUIQQER Login password",
+    "name": "sequry/auth-secondpassword",
+    "type": "quiqqer-plugin",
+    "description": "Auhentication plugin for Sequry -> Second password, independent from QUIQQER Login password",
     "version": "dev-dev",
     "license": "",
     "authors": [
@@ -17,7 +17,6 @@
         "url": "http:\/\/www.pcsg.de"
     },
     "require": {
-        "php": ">=5.3",
         "quiqqer\/quiqqer": "*@dev"
     },
     "autoload": {
