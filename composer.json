@@ -1,27 +1,27 @@
 {
-    "name": "sequry/auth-secondpassword",
-    "type": "quiqqer-plugin",
-    "description": "Auhentication plugin for Sequry -> Second password, independent from QUIQQER Login password",
-    "version": "dev-master",
-    "license": "",
-    "authors": [
-        {
-            "name": "Patrick M\u00fcller",
-            "email": "p.mueller@pcsg.de",
-            "homepage": "http:\/\/www.pcsg.de",
-            "role": "Developer"
-        }
-    ],
-    "support": {
-        "email": "support@pcsg.de",
-        "url": "http:\/\/www.pcsg.de"
-    },
-    "require": {
-        "quiqqer\/quiqqer": "*@dev"
-    },
-    "autoload": {
-        "psr-0": {
-            "Pcsg": "src\/"
-        }
+  "name": "sequry/auth-secondpassword",
+  "type": "quiqqer-plugin",
+  "description": "Sequry authentication with second password, independent from Sequry login password",
+  "version": "dev-master",
+  "license": "",
+  "authors": [
+    {
+      "name": "Patrick M\u00fcller",
+      "email": "p.mueller@pcsg.de",
+      "homepage": "http:\/\/www.pcsg.de",
+      "role": "Developer"
     }
+  ],
+  "support": {
+    "email": "support@pcsg.de",
+    "url": "http:\/\/www.pcsg.de"
+  },
+  "require": {
+    "sequry/core": ">=1.0|dev-master|dev-dev"
+  },
+  "autoload": {
+    "psr-0": {
+      "Pcsg": "src\/"
+    }
+  }
 }

@@ -1,10 +1,10 @@
 /**
- * Control for creating a new password
+ * Authentication control for pcsg/gpmauthsecondpassword
  *
  * @module package/pcsg/gpmauthsecondpassword/bin/controls/Authentication
  * @author www.pcsg.de (Patrick Müller)
  *
- * @require qui/controls/Control
+ * @require package/pcsg/gpmauthpassword/bin/controls/Authentication
  * @require Locale
  * @require css!package/pcsg/gpmauthsecondpassword/bin/controls/Authentication.css
  *
@@ -12,64 +12,39 @@
  */
 define('package/pcsg/gpmauthsecondpassword/bin/controls/Authentication', [
 
-    'qui/controls/Control',
+    'package/pcsg/gpmauthpassword/bin/controls/Authentication',
     'Locale',
 
     'css!package/pcsg/gpmauthsecondpassword/bin/controls/Authentication.css'
 
-], function (QUIControl, QUILocale) {
+], function (AuthenticationBaseClass, QUILocale) {
     "use strict";
 
     var lg = 'pcsg/gpmauthsecondpassword';
 
     return new Class({
 
-        Extends: QUIControl,
+        Extends: AuthenticationBaseClass,
         Type   : 'package/pcsg/gpmauthsecondpassword/bin/controls/Authentication',
 
         Binds: [
-            '$onInject',
+            '$onImport',
+            'focus',
+            'enable',
+            'disable',
             'getAuthData'
         ],
 
-        initialize: function (options) {
-            this.parent(options);
-
-            this.$Categories = null;
-            this.$Input      = null;
-
-            this.addEvents({
-                onInject: this.$onInject
-            });
-        },
-
         /**
-         * create the domnode element
-         *
-         * @return {HTMLDivElement}
+         * Event: onImport
          */
-        create: function () {
-            this.$Elm = this.parent();
+        $onImport: function () {
+            var self = this;
 
-            this.$Elm.set(
-                'html',
-                '<label>' +
-                '<span class="gpm-auth-second-password-title">' +
-                QUILocale.get(lg, 'authentication.password.label') +
-                '</span>' +
-                '<input type="password" class="gpm-auth-second-password-input"/>' +
-                '</label>'
-            );
+            this.parent();
 
-            return this.$Elm;
-        },
-
-        /**
-         * event : on inject
-         */
-        $onInject: function () {
-            var self  = this;
-            this.$Input = this.$Elm.getElement('.gpm-auth-second-password-input');
+            this.$Input.type        = 'password';
+            this.$Input.placeholder = QUILocale.get(lg, 'authentication.password.label');
 
             this.$Input.addEvents({
                 keydown: function (event) {
@@ -81,8 +56,39 @@ define('package/pcsg/gpmauthsecondpassword/bin/controls/Authentication', [
             });
         },
 
+        /**
+         * Focus the element for authentication data input
+         */
         focus: function () {
             this.$Input.focus();
+        },
+
+        /**
+         * Enable the element for authentication data input
+         */
+        enable: function () {
+            this.$Input.disabled = false;
+        },
+
+        /**
+         * Disable the element for authentication data input
+         */
+        disable: function () {
+            this.$Input.disabled = true;
+        },
+
+        /**
+         * Show the element for authentication data input
+         */
+        show: function () {
+            this.$Input.setStyle('display', '');
+        },
+
+        /**
+         * Hide the element for authentication data input
+         */
+        hide: function () {
+            this.$Input.setStyle('display', 'none');
         },
 
         /**

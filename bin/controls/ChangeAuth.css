@@ -1,13 +1,25 @@
-.gpm-auth-password-title {
+.gpm-auth-secondpassword-title {
     float: left;
     margin-bottom: 5px;
     width: 100%
 }
 
-.gpm-auth-password-input {
+.gpm-auth-secondpassword-input {
     float: left;
 }
 
-.pcsg-gpm-auth-change-control label {
-    width: 250px !important;
+.pcsg-gpm-auth-secondpassword-change-inputs label {
+    clear: both;
+    float: left;
+    width: 300px !important;
+}
+
+.pcsg-gpm-auth-secondpassword-change-inputs label:first-of-type {
+    margin-bottom: 10px;
+}
+
+.pcsg-gpm-auth-secondpassword-change-msg {
+    float: left;
+    margin-top: 10px;
+    width: 100%;
 }

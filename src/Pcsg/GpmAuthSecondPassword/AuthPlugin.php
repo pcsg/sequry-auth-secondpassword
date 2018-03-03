@@ -16,6 +16,7 @@ use Pcsg\GroupPasswordManager\Security\Utils;
 use QUI;
 use Pcsg\GroupPasswordManager\Security\Interfaces\IAuthPlugin;
 use Pcsg\GroupPasswordManager\Security\Handler\Authentication;
+use Pcsg\GroupPasswordManager\Security\HiddenString;
 
 /**
  * Class Events
@@ -43,24 +44,40 @@ class AuthPlugin implements IAuthPlugin
     protected static $authInformation = array();
 
     /**
-     * Return internal name of auth plugin
+     * Return locale data for auth plugin name
      *
-     * @return String
+     * @return array
      */
-    public static function getName()
+    public static function getNameLocaleData()
     {
-        return self::NAME;
+        return array(
+            'pcsg/gpmauthsecondpassword',
+            'plugin.name'
+        );
+    }
+
+    /**
+     * Return locale data for auth plugin description
+     *
+     * @return array
+     */
+    public static function getDescriptionLocaleData()
+    {
+        return array(
+            'pcsg/gpmauthsecondpassword',
+            'plugin.description'
+        );
     }
 
     /**
      * Authenticate a user with this plugin
      *
-     * @param mixed $information
+     * @param HiddenString $information
      * @param \QUI\Users\User $User (optional) - if omitted, use current session user
      * @return true - if authenticated
      * @throws QUI\Exception
      */
-    public static function authenticate($information, $User = null)
+    public static function authenticate(HiddenString $information, $User = null)
     {
         if (is_null($User)) {
             $User = QUI::getUserBySession();
@@ -97,7 +114,7 @@ class AuthPlugin implements IAuthPlugin
 
         $macExpected = $data['MAC'];
         $macActual   = MAC::create(
-            implode('', $macData),
+            new HiddenString(implode('', $macData)),
             Utils::getSystemPasswordAuthKey()
         );
 
@@ -181,14 +198,14 @@ class AuthPlugin implements IAuthPlugin
     /**
      * Change authentication information
      *
-     * @param mixed $old - current authentication information
-     * @param mixed $new - new authentication information
+     * @param HiddenString $old - current authentication information
+     * @param HiddenString $new - new authentication information
      * @param \QUI\Users\User $User (optional) - if omitted, use current session user
      *
      * @return void
      * @throws QUI\Exception
      */
-    public static function changeAuthenticationInformation($old, $new, $User = null)
+    public static function changeAuthenticationInformation(HiddenString $old, HiddenString $new, $User = null)
     {
         if (is_null($User)) {
             $User = QUI::getUserBySession();
@@ -212,8 +229,6 @@ class AuthPlugin implements IAuthPlugin
         }
 
         // check new authentication information
-        $new = trim($new);
-
         if (empty($new)) {
             throw new QUI\Exception(array(
                 'pcsg/gpmauthsecondpassword',
@@ -223,10 +238,7 @@ class AuthPlugin implements IAuthPlugin
 
         // set new user password
         $passwordSalt = Random::getRandomData();
-
-        \QUI\System\Log::writeRecursive($new);
         $passwordHash = Hash::create($new, $passwordSalt);
-        \QUI\System\Log::writeRecursive($passwordHash);
 
         $keySalt = Random::getRandomData();
 
@@ -287,13 +299,13 @@ class AuthPlugin implements IAuthPlugin
     /**
      * Registers a user with this plugin
      *
-     * @param mixed $information - authentication information given by the user
+     * @param HiddenString $information - authentication information given by the user
      * @param \QUI\Users\User $User (optional) - if omitted, use current session user
-     * @return string - authentication information
+     * @return HiddenString - authentication information
      *
      * @throws QUI\Exception
      */
-    public static function register($information, $User = null)
+    public static function register(HiddenString $information, $User = null)
     {
         if (is_null($User)) {
             $User = QUI::getUserBySession();
@@ -306,9 +318,11 @@ class AuthPlugin implements IAuthPlugin
             ));
         }
 
-        if (!is_array($information)
-            || !isset($information['password'])
-            || !isset($information['passwordcheck'])
+        $information = $information->getString();
+        $information = json_decode($information, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE
+            || !is_array($information)
             || empty($information['password'])
             || empty($information['passwordcheck'])
         ) {
@@ -318,10 +332,10 @@ class AuthPlugin implements IAuthPlugin
             ));
         }
 
-        $pw      = $information['password'];
+        $pw      = new HiddenString($information['password']);
         $pwCheck = $information['passwordcheck'];
 
-        if ($pw !== $pwCheck) {
+        if ($pw->getString() !== $pwCheck) {
             throw new QUI\Exception(array(
                 'pcsg/gpmauthsecondpassword',
                 'exception.register.passwords.not.equal'
@@ -340,7 +354,7 @@ class AuthPlugin implements IAuthPlugin
         );
 
         $macValue = MAC::create(
-            implode('', $macData),
+            new HiddenString(implode('', $macData)),
             Utils::getSystemPasswordAuthKey()
         );
 
@@ -425,11 +439,7 @@ class AuthPlugin implements IAuthPlugin
      */
     public static function registerPlugin()
     {
-        Authentication::registerPlugin(
-            self::class,
-            self::NAME,
-            'Authentifizierung per Zweit-Passwort'
-        );
+        Authentication::registerPlugin(new self());
     }
 
     /**
