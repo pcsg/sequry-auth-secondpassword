@@ -1,11 +1,11 @@
 gpmauthsecondpassword
 ========
 
-Auhentication plugin for pcsg/grouppasswordmanager -> Second password, independent from QUIQQER Login password
+Auhentication plugin for sequry/core -> Second password, independent from QUIQQER Login password
 
 Paketname:
 
-    pcsg/gpmauthsecondpassword
+    sequry/auth-secondpassword
 
 
 Features (Funktionen)
@@ -15,7 +15,7 @@ Second password authentication method
 Installation
 ------------
 
-Der Paketname ist: pcsg/gpmauthsecondpassword
+Der Paketname ist: sequry/auth-secondpassword
 
 
 Mitwirken

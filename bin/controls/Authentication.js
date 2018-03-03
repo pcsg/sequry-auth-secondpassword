@@ -1,31 +1,27 @@
 /**
- * Authentication control for pcsg/gpmauthsecondpassword
+ * Authentication control for sequry/auth-secondpassword
  *
- * @module package/pcsg/gpmauthsecondpassword/bin/controls/Authentication
+ * @module package/sequry/auth-secondpassword/bin/controls/Authentication
  * @author www.pcsg.de (Patrick Müller)
- *
- * @require package/pcsg/gpmauthpassword/bin/controls/Authentication
- * @require Locale
- * @require css!package/pcsg/gpmauthsecondpassword/bin/controls/Authentication.css
  *
  * @event onSubmit
  */
-define('package/pcsg/gpmauthsecondpassword/bin/controls/Authentication', [
+define('package/sequry/auth-secondpassword/bin/controls/Authentication', [
 
     'package/pcsg/gpmauthpassword/bin/controls/Authentication',
     'Locale',
 
-    'css!package/pcsg/gpmauthsecondpassword/bin/controls/Authentication.css'
+    'css!package/sequry/auth-secondpassword/bin/controls/Authentication.css'
 
 ], function (AuthenticationBaseClass, QUILocale) {
     "use strict";
 
-    var lg = 'pcsg/gpmauthsecondpassword';
+    var lg = 'sequry/auth-secondpassword';
 
     return new Class({
 
         Extends: AuthenticationBaseClass,
-        Type   : 'package/pcsg/gpmauthsecondpassword/bin/controls/Authentication',
+        Type   : 'package/sequry/auth-secondpassword/bin/controls/Authentication',
 
         Binds: [
             '$onImport',

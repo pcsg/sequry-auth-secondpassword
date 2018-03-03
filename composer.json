@@ -20,8 +20,8 @@
     "sequry/core": ">=1.0|dev-master|dev-dev"
   },
   "autoload": {
-    "psr-0": {
-      "Pcsg": "src\/"
+    "psr-0" : {
+      "Sequry\\Auth\\" : "src/Sequry/"
     }
   }
 }
