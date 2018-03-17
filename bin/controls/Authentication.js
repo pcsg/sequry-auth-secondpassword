@@ -8,7 +8,7 @@
  */
 define('package/sequry/auth-secondpassword/bin/controls/Authentication', [
 
-    'package/pcsg/gpmauthpassword/bin/controls/Authentication',
+    'package/sequry/core/bin/controls/authPlugins/Authentication',
     'Locale',
 
     'css!package/sequry/auth-secondpassword/bin/controls/Authentication.css'
