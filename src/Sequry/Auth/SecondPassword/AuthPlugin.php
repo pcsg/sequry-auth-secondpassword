@@ -248,7 +248,7 @@ class AuthPlugin implements IAuthPlugin
         );
 
         $macValue = MAC::create(
-            implode('', $macData),
+            new HiddenString(implode('', $macData)),
             Utils::getSystemPasswordAuthKey()
         );
 
@@ -479,7 +479,7 @@ class AuthPlugin implements IAuthPlugin
      * Delete a user from this plugin
      *
      * @param CryptoUser $CryptoUser
-     * @return mixed
+     * @return void
      */
     public static function deleteUser($CryptoUser)
     {
