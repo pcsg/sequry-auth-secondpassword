@@ -1,40 +1,44 @@
-gpmauthsecondpassword
+![Sequry Authentication - Second Password](bin/images/Readme.jpg)
+
+Sequry
 ========
 
-Auhentication plugin for sequry/core -> Second password, independent from QUIQQER Login password
+Authentication module for Sequry password manager. Authenticate with an additional password.
 
-Paketname:
+Package Name:
 
     sequry/auth-secondpassword
 
-
-Features (Funktionen)
+Features
 --------
-Second password authentication method
+
+* Easily authenticate to work with your secret data with a second password (independent from your Sequry login password)
+* Generate a secure random password
 
 Installation
 ------------
+The Package Name is: sequry/auth-secondpassword
 
-Der Paketname ist: sequry/auth-secondpassword
+Usage
+-----
+After you installed this package every Sequry user can register for this authentication module.
 
+Do not forget to add this authentication module to your Security Classes.
 
-Mitwirken
+Contribute
 ----------
-
-- Issue Tracker: 
-- Source Code: 
-
+- Project: https://dev.quiqqer.com/sequry/core
+- Issue Tracker: https://dev.quiqqer.com/sequry/core/issues
+- Source Code: https://dev.quiqqer.com/sequry/core/tree/master
 
 Support
 -------
+If you have found any errors, have wishes or suggestions for improvement,
+you can contact us by email at support@pcsg.de or create an issue in the issue tracker.
 
-Falls Sie einen Fehler gefunden haben oder Verbesserungen wünschen,
-senden Sie bitte eine E-Mail an support@pcsg.de.
+We will try to meet your needs or send them to the responsible developers
+of the project.
 
-
-Lizenz
+License
 -------
-
-
-Entwickler
---------
+GPL-3.0+

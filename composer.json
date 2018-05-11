@@ -3,25 +3,24 @@
   "type": "quiqqer-plugin",
   "description": "Sequry authentication with second password, independent from Sequry login password",
   "version": "dev-dev",
-  "license": "",
+  "license": "GPL-3.0+",
   "authors": [
     {
-      "name": "Patrick M\u00fcller",
+      "name": "Patrick Müller",
       "email": "p.mueller@pcsg.de",
-      "homepage": "http:\/\/www.pcsg.de",
+      "homepage": "http://www.pcsg.de",
       "role": "Developer"
     }
   ],
   "support": {
-    "email": "support@pcsg.de",
-    "url": "http:\/\/www.pcsg.de"
+    "email": "support@pcsg.de"
   },
   "require": {
     "sequry/core": ">=1.0|dev-master|dev-dev"
   },
   "autoload": {
-    "psr-0" : {
-      "Sequry\\Auth\\" : "src/Sequry/Auth/"
+    "psr-0": {
+      "Sequry\\Auth\\": "src/Sequry/Auth/"
     }
   }
 }
