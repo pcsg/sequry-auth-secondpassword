@@ -44,6 +44,13 @@
 
     <groups name="sequry/auth-secondpassword" datatype="php,js">
 
+        <locale name="package.title">
+            <de><![CDATA[Sequry-Authentifizierung mit Zweit-Passwort]]></de>
+        </locale>
+        <locale name="package.description">
+            <de><![CDATA[Authentifizierung für verschlüsselte Daten in Sequry mittels Zweit-Passwort.]]></de>
+        </locale>
+
         <locale name="plugin.name">
             <de><![CDATA[Zweit-Passwort]]></de>
         </locale>
