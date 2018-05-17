@@ -10,7 +10,7 @@
             <locale group="sequry/auth-secondpassword" var="package.description"/>
         </description>
 
-        <!--<image src="URL_OPT_DIR/quiqqer/frontend-users/bin/images/Logo.jpg"/>-->
+        <image src="URL_OPT_DIR/sequry/auth-secondpassword/bin/images/Logo.png"/>
 
         <!--<preview>-->
             <!---->
