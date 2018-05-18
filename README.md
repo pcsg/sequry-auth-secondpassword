@@ -1,6 +1,6 @@
-![Sequry Authentication - Second Password](bin/images/Readme.jpg)
+![Sequry Authentication - Second Password](bin/images/Readme.png)
 
-Sequry
+Sequry - Second Password Authentication
 ========
 
 Authentication module for Sequry password manager. Authenticate with an additional password.
@@ -27,9 +27,9 @@ Do not forget to add this authentication module to your Security Classes.
 
 Contribute
 ----------
-- Project: https://dev.quiqqer.com/sequry/core
-- Issue Tracker: https://dev.quiqqer.com/sequry/core/issues
-- Source Code: https://dev.quiqqer.com/sequry/core/tree/master
+- Project: https://dev.quiqqer.com/sequry/auth-secondpassword
+- Issue Tracker: https://dev.quiqqer.com/sequry/auth-secondpassword/issues
+- Source Code: https://dev.quiqqer.com/sequry/auth-secondpassword/tree/master
 
 Support
 -------
