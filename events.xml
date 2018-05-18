@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <events>
 
-    <event on="onSequryLoadAuthPlugins" fire="\Sequry\Auth\SecondPassword\AuthPlugin::registerPlugin"/>
+    <event on="onSequryLoadAuthPlugins" fire="\Sequry\Auth\SecondPassword\AuthPlugin::registerPlugin" />
 
 </events>
