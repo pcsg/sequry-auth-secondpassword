@@ -12,9 +12,9 @@
 
         <image src="URL_OPT_DIR/sequry/auth-secondpassword/bin/images/Logo.png"/>
 
-        <!--<preview>-->
-            <!---->
-        <!--</preview>-->
+        <preview>
+            <image src="URL_OPT_DIR/sequry/auth-secondpassword/bin/images/preview/Backend_Auth.png"/>
+        </preview>
 
         <support>
             <email><![CDATA[support@pcsg.de]]></email>
