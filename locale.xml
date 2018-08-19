@@ -37,7 +37,8 @@
 
         <!-- Class: Events -->
         <locale name="exception.set.password.only.via.plugin">
-            <de><![CDATA[Das Passwort des Benutzers <b>[userName]</b> (#[userId]) kann nicht über das Standard QUIQQER-Interface geändert werden, da das Modul <b>gpmauthsecondpassword</b> installiert ist und der Benutzer für dieses Plugin registriert ist. Das Passwort kann ausschließlich über das Authentifizierungs-Interface des Passwort-Managers geändert werden.]]></de>
+            <de>
+                <![CDATA[Das Passwort des Benutzers <b>[userName]</b> (#[userId]) kann nicht über das Standard QUIQQER-Interface geändert werden, da das Modul <b>gpmauthsecondpassword</b> installiert ist und der Benutzer für dieses Plugin registriert ist. Das Passwort kann ausschließlich über das Authentifizierungs-Interface des Passwort-Managers geändert werden.]]></de>
         </locale>
 
     </groups>
@@ -68,16 +69,16 @@
         </locale>
 
         <!-- Control: Registration -->
-        <locale name="registration.password.label">
+        <locale name="controls.Registration.template.labelPassword">
             <de><![CDATA[Zweit-Passwort]]></de>
         </locale>
-        <locale name="registration.passwordcheck.label">
+        <locale name="controls.Registration.template.labelPasswordCheck">
             <de><![CDATA[Zweit-Passwort wiederholen]]></de>
         </locale>
-        <locale name="registration.random.btn.text">
+        <locale name="controls.Registration.btn_random.text">
             <de><![CDATA[Zufälliges Passwort]]></de>
         </locale>
-        <locale name="registration.passwordshow.label">
+        <locale name="controls.Registration.template.labelShowPasswords">
             <de><![CDATA[Passwörter im Klartext anzeigen]]></de>
         </locale>
 
