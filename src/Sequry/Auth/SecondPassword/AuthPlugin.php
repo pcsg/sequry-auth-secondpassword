@@ -25,7 +25,8 @@ use Sequry\Core\Security\HiddenString;
  */
 class AuthPlugin implements IAuthPlugin
 {
-    const TBL = 'pcsg_gpm_auth_second_password';
+    const TBL                 = 'pcsg_gpm_auth_second_password';
+    const PASSWORD_MIN_LENGTH = 5;
 
     /**
      * Flag for user password change
@@ -39,7 +40,7 @@ class AuthPlugin implements IAuthPlugin
      *
      * @var array
      */
-    protected static $authInformation = array();
+    protected static $authInformation = [];
 
     /**
      * Return locale data for auth plugin name
@@ -48,10 +49,10 @@ class AuthPlugin implements IAuthPlugin
      */
     public static function getNameLocaleData()
     {
-        return array(
+        return [
             'sequry/auth-secondpassword',
             'plugin.name'
-        );
+        ];
     }
 
     /**
@@ -61,10 +62,10 @@ class AuthPlugin implements IAuthPlugin
      */
     public static function getDescriptionLocaleData()
     {
-        return array(
+        return [
             'sequry/auth-secondpassword',
             'plugin.description'
-        );
+        ];
     }
 
     /**
@@ -87,28 +88,28 @@ class AuthPlugin implements IAuthPlugin
 
         if (!self::isRegistered($User)) {
             // @todo eigenen 401 error code
-            throw new QUI\Exception(array(
+            throw new QUI\Exception([
                 'sequry/auth-secondpassword',
                 'exception.user.not.registered'
-            ));
+            ]);
         }
 
         // get salt
-        $result = QUI::getDataBase()->fetch(array(
+        $result = QUI::getDataBase()->fetch([
             'from'  => self::TBL,
-            'where' => array(
+            'where' => [
                 'userId' => $User->getId()
-            )
-        ));
+            ]
+        ]);
 
         $data = current($result);
 
-        $macData = array(
+        $macData = [
             $data['userId'],
             $data['password_hash'],
             $data['password_salt'],
             $data['key_salt']
-        );
+        ];
 
         $macExpected = $data['MAC'];
         $macActual   = MAC::create(
@@ -118,14 +119,14 @@ class AuthPlugin implements IAuthPlugin
 
         if (!MAC::compare($macExpected, $macActual)) {
             QUI\System\Log::addCritical(
-                self::class . ' authenticate() -> Auth data for user #' . $data['userId'] . ' possibly altered.'
-                . ' MAC mismatch!'
+                self::class.' authenticate() -> Auth data for user #'.$data['userId'].' possibly altered.'
+                .' MAC mismatch!'
             );
 
-            throw new QUI\Exception(array(
+            throw new QUI\Exception([
                 'sequry/auth-secondpassword',
                 'exception.user.authentication.data.not.authentic'
-            ));
+            ]);
         }
 
         $salt = $data['password_salt'];
@@ -134,10 +135,10 @@ class AuthPlugin implements IAuthPlugin
         $hashExpected = self::getPasswordHash($User->getId());
 
         if (!MAC::compare($hashExpected, $hashActual)) {
-            throw new QUI\Exception(array(
+            throw new QUI\Exception([
                 'sequry/auth-secondpassword',
                 'exception.user.authentication.data.wrong'
-            ));
+            ]);
         }
 
         self::$authInformation[$User->getId()] = $information;
@@ -174,10 +175,10 @@ class AuthPlugin implements IAuthPlugin
         }
 
         if (!self::isAuthenticated($User)) {
-            throw new QUI\Exception(array(
+            throw new QUI\Exception([
                 'sequry/auth-secondpassword',
                 'exception.derive.key.user.not.authenticated'
-            ));
+            ]);
         }
 
         return KDF::createKey(self::$authInformation[$User->getId()], self::getKeySalt($User));
@@ -210,28 +211,38 @@ class AuthPlugin implements IAuthPlugin
         }
 
         if (!self::isRegistered($User)) {
-            throw new QUI\Exception(array(
+            throw new QUI\Exception([
                 'sequry/auth-secondpassword',
                 'exception.change.auth.user.not.registered'
-            ));
+            ]);
         }
 
         // check old authentication information
         try {
             self::authenticate($old, $User);
         } catch (\Exception $Exception) {
-            throw new QUI\Exception(array(
+            throw new QUI\Exception([
                 'sequry/auth-secondpassword',
                 'exception.change.auth.old.information.wrong'
-            ));
+            ]);
         }
 
         // check new authentication information
         if (empty($new)) {
-            throw new QUI\Exception(array(
+            throw new QUI\Exception([
                 'sequry/auth-secondpassword',
-                'exception.change.auth.new.information.empty'
-            ));
+                'exception.change.auth.new_information_empty'
+            ]);
+        }
+
+        if (mb_strlen($new) < self::PASSWORD_MIN_LENGTH) {
+            throw new QUI\Exception([
+                'sequry/auth-secondpassword',
+                'exception.change.auth.new_information_too_short',
+                [
+                    'minLength' => self::PASSWORD_MIN_LENGTH
+                ]
+            ]);
         }
 
         // set new user password
@@ -240,12 +251,12 @@ class AuthPlugin implements IAuthPlugin
 
         $keySalt = Random::getRandomData();
 
-        $macData = array(
+        $macData = [
             $User->getId(),
             $passwordHash,
             $passwordSalt,
             $keySalt
-        );
+        ];
 
         $macValue = MAC::create(
             new HiddenString(implode('', $macData)),
@@ -254,15 +265,15 @@ class AuthPlugin implements IAuthPlugin
 
         QUI::getDataBase()->update(
             self::TBL,
-            array(
+            [
                 'password_hash' => $passwordHash,
                 'password_salt' => $passwordSalt,
                 'key_salt'      => $keySalt,
                 'MAC'           => $macValue
-            ),
-            array(
+            ],
+            [
                 'userId' => $User->getId()
-            )
+            ]
         );
 
         self::$authInformation[$User->getId()] = $new;
@@ -280,13 +291,13 @@ class AuthPlugin implements IAuthPlugin
             $User = QUI::getUserBySession();
         }
 
-        $result = QUI::getDataBase()->fetch(array(
-            'select' => array('key_salt'),
+        $result = QUI::getDataBase()->fetch([
+            'select' => ['key_salt'],
             'from'   => self::TBL,
-            'where'  => array(
+            'where'  => [
                 'userId' => $User->getId()
-            )
-        ));
+            ]
+        ]);
 
         // @todo ggf. abfragen ob existent
         $salt = $result[0]['key_salt'];
@@ -310,10 +321,10 @@ class AuthPlugin implements IAuthPlugin
         }
 
         if (self::isRegistered($User)) {
-            throw new QUI\Exception(array(
+            throw new QUI\Exception([
                 'sequry/auth-secondpassword',
                 'exception.user.already.registered'
-            ));
+            ]);
         }
 
         $information = $information->getString();
@@ -324,32 +335,32 @@ class AuthPlugin implements IAuthPlugin
             || empty($information['password'])
             || empty($information['passwordcheck'])
         ) {
-            throw new QUI\Exception(array(
+            throw new QUI\Exception([
                 'sequry/auth-secondpassword',
                 'exception.register.invalid.registration.information'
-            ));
+            ]);
         }
 
         $pw      = new HiddenString($information['password']);
         $pwCheck = $information['passwordcheck'];
 
         if ($pw->getString() !== $pwCheck) {
-            throw new QUI\Exception(array(
+            throw new QUI\Exception([
                 'sequry/auth-secondpassword',
                 'exception.register.passwords.not.equal'
-            ));
+            ]);
         }
 
         $passwordSalt = Random::getRandomData();
         $passwordHash = Hash::create($pw, $passwordSalt);
         $keySalt      = Random::getRandomData();
 
-        $macData = array(
+        $macData = [
             $User->getId(),
             $passwordHash,
             $passwordSalt,
             $keySalt
-        );
+        ];
 
         $macValue = MAC::create(
             new HiddenString(implode('', $macData)),
@@ -358,13 +369,13 @@ class AuthPlugin implements IAuthPlugin
 
         QUI::getDataBase()->insert(
             self::TBL,
-            array(
+            [
                 'userId'        => $User->getId(),
                 'password_hash' => $passwordHash,
                 'password_salt' => $passwordSalt,
                 'key_salt'      => $keySalt,
                 'MAC'           => $macValue
-            )
+            ]
         );
 
         return $pw;
@@ -382,13 +393,13 @@ class AuthPlugin implements IAuthPlugin
             $User = QUI::getUserBySession();
         }
 
-        $result = QUI::getDataBase()->fetch(array(
+        $result = QUI::getDataBase()->fetch([
             'count' => 1,
             'from'  => self::TBL,
-            'where' => array(
+            'where' => [
                 'userId' => $User->getId()
-            )
-        ));
+            ]
+        ]);
 
         if (current(current($result)) == 0) {
             return false;
@@ -404,14 +415,14 @@ class AuthPlugin implements IAuthPlugin
      */
     public static function getRegisteredUserIds()
     {
-        $userIds = array();
+        $userIds = [];
 
-        $result = QUI::getDataBase()->fetch(array(
-            'select' => array(
+        $result = QUI::getDataBase()->fetch([
+            'select' => [
                 'userId'
-            ),
+            ],
             'from'   => self::TBL
-        ));
+        ]);
 
         foreach ($result as $row) {
             $userIds[] = $row['userId'];
@@ -458,15 +469,15 @@ class AuthPlugin implements IAuthPlugin
      */
     protected static function getPasswordHash($userId)
     {
-        $result = QUI::getDataBase()->fetch(array(
-            'select' => array(
+        $result = QUI::getDataBase()->fetch([
+            'select' => [
                 'password_hash'
-            ),
+            ],
             'from'   => self::TBL,
-            'where'  => array(
+            'where'  => [
                 'userId' => $userId
-            )
-        ));
+            ]
+        ]);
 
         if (empty($result)) {
             return false;
@@ -485,9 +496,9 @@ class AuthPlugin implements IAuthPlugin
     {
         QUI::getDataBase()->delete(
             self::TBL,
-            array(
+            [
                 'userId' => $CryptoUser->getId()
-            )
+            ]
         );
     }
 }

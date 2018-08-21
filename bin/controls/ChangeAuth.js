@@ -4,7 +4,7 @@
  * @module package/sequry/auth-secondpassword/bin/controls/ChangeAuth
  * @author www.pcsg.de (Patrick Müller)
  *
- * @event onSubmit [authData, this]
+ * @event onSubmit [this]
  */
 define('package/sequry/auth-secondpassword/bin/controls/ChangeAuth', [
 
@@ -28,7 +28,7 @@ define('package/sequry/auth-secondpassword/bin/controls/ChangeAuth', [
 
         Binds: [
             '$onInject',
-            '$check',
+            'checkAuthData',
             'getAuthData',
             'submit',
             'focus',
@@ -69,7 +69,7 @@ define('package/sequry/auth-secondpassword/bin/controls/ChangeAuth', [
             var OnKeyDown = function (event) {
                 if (typeof event !== 'undefined' &&
                     event.code === 13) {
-                    self.submit();
+                    self.fireEvent('submit', [self]);
                 }
             };
 
@@ -85,20 +85,11 @@ define('package/sequry/auth-secondpassword/bin/controls/ChangeAuth', [
         },
 
         /**
-         * Submit data
-         */
-        submit: function () {
-            if (this.$check()) {
-                this.fireEvent('submit', [this.getAuthData(), this]);
-            }
-        },
-
-        /**
-         * Check if passwords are equal
+         * Checks if the new authentication information input is correct
          *
-         * @returns {boolean}
+         * @return {boolean} - Correctness of information
          */
-        $check: function () {
+        checkAuthData: function () {
             var pass      = this.$PasswordInput.value.trim();
             var passCheck = this.$PasswordCheckInput.value.trim();
 
@@ -113,6 +104,8 @@ define('package/sequry/auth-secondpassword/bin/controls/ChangeAuth', [
                     'controls.changeauth.password_mismatch'
                 )
             );
+
+            this.$MsgElm.setStyle('display', 'block');
 
             return false;
         },

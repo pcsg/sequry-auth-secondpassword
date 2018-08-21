@@ -28,8 +28,11 @@
         <locale name="exception.change.auth.old.information.wrong">
             <de><![CDATA[Die alten Authentifizierunginformationen sind nicht korrekt.]]></de>
         </locale>
-        <locale name="exception.change.auth.new.information.empty">
-            <de><![CDATA[Die neuen Authentifizierungsinformationen sind leer.]]></de>
+        <locale name="exception.change.auth.new_information_empty">
+            <de><![CDATA[Die neuen Zugangsdaten sind leer.]]></de>
+        </locale>
+        <locale name="exception.change.auth.new_information_too_short">
+            <de><![CDATA[Das neue Zweit-Passwort muss mindestens [minLength] Zeichen enthalten.]]></de>
         </locale>
         <locale name="exception.user.authentication.data.not.authentic">
             <de><![CDATA[Die neuen Authentifizierungsinformationen haben die Authentizitätsprüfung nicht bestanden. Bitte kontaktieren Sie einen Administrator.]]></de>
