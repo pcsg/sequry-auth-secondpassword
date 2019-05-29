@@ -1,25 +1,24 @@
-.gpm-auth-second-password-title {
-    float: left;
-    margin-bottom: 5px;
-    width: 100%
-}
-
-.gpm-auth-second-password-show {
+.sequry-auth-secondpassword-registration-show {
     margin: 10px 0;
     clear: both;
     float: left;
 }
 
-.gpm-auth-second-password-generate {
+.sequry-auth-secondpassword-registration-generate {
     float: left;
     clear: both;
 }
 
-.gpm-auth-second-password-input,
-.gpm-auth-second-passwordcheck-input{
+.sequry-auth-secondpassword-registration-input,
+.sequry-auth-secondpassword-registration-inputcheck {
     float: left;
 }
 
-.gpm-auth-second-password label {
+.sequry-auth-secondpassword-registration label {
+    margin-right: 10px;
     width: initial !important;
+}
+
+.sequry-auth-secondpassword-registration label > span {
+    display: block;
 }
